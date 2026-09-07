@@ -46,3 +46,6 @@ URL https://juan-briseno-photography.netlify.app. Env vars `PUBLIC_SANITY_PROJEC
 are set on the site; the Netlify origin is in Sanity CORS. Deploy from the CLI with
 `npx netlify-cli deploy --build --prod` (folder is linked; `.netlify/` is gitignored). Continuous deploy
 from GitHub + the Sanity publish webhook require the repo to be linked in the Netlify dashboard.
+Netlify build hook "Sanity publish" (id `6a9eeea69b7856a200c28aae`) is called by Sanity webhook
+`vaz83yUZoxQqTCgL` ("Netlify rebuild on publish", document create/update/delete on gallery + siteSettings,
+published only). Both need the GitHub repo linked to the Netlify site to actually build.
