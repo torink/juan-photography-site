@@ -38,3 +38,11 @@ Start it with `npm run dev` in background mode and read the URL from the output;
 ## Sanity project
 
 Project `4e62iguy` ("Briseno-Guzman Portfolio", org owned by Torin, free plan), dataset `production`. CORS allows `http://localhost:4321`; add the Netlify URL when deploying. `.env` is filled locally and gitignored.
+
+## Hosting (Netlify, 2026-09-03)
+
+Site `juan-briseno-photography` on Torin's Netlify team (free), project id `c625e16d-da85-42fb-b81e-2fd7098521b5`.
+URL https://juan-briseno-photography.netlify.app. Env vars `PUBLIC_SANITY_PROJECT_ID` / `PUBLIC_SANITY_DATASET`
+are set on the site; the Netlify origin is in Sanity CORS. Deploy from the CLI with
+`npx netlify-cli deploy --build --prod` (folder is linked; `.netlify/` is gitignored). Continuous deploy
+from GitHub + the Sanity publish webhook require the repo to be linked in the Netlify dashboard.
