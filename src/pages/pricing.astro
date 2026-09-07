@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPricing, getSiteSettings } from '../sanity/queries';
+const [site, pricing] = await Promise.all([getSiteSettings(), getPricing()]);
+const packages = pricing?.packages ?? [];
+---
+<Base title="Pricing" description={pricing?.intro}>
+  <div class="page pricing">
+    <h1 class="display">Pricing</h1>
+    <div class="side">
+      {pricing?.intro && <p class="lede">{pricing.intro}</p>}
+      {site.email && <p class="mono"><a href={`mailto:${site.email}`}>Ask about a date →</a></p>}
+    </div>
+    <div class="body">
+      {packages.length === 0 && <p class="empty-note">Add packages under Price list in the Studio.</p>}
+      <ol class="packages">
+        {packages.map((p, i) => (
+          <li class="package">
+            <div class="package-head">
+              <span class="mono num">{String(i + 1).padStart(2, '0')}</span>
+              <h2 class="display">{p.name}</h2>
+              {p.price && <span class="price">{p.price}</span>}
+            </div>
+            {p.summary && <p class="summary">{p.summary}</p>}
+            {(p.includes ?? []).length > 0 && (
+              <ul class="includes mono">{p.includes!.map((x) => <li>{x}</li>)}</ul>
+            )}
+          </li>
+        ))}
+      </ol>
+      {pricing?.note && <p class="note mono">{pricing.note}</p>}
+    </div>
+  </div>
+</Base>

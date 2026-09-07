@@ -1,10 +1,11 @@
 ---
 import '../styles/global.css';
-import { getSiteSettings } from '../sanity/queries';
+import { getPricing, getSiteSettings } from '../sanity/queries';
 
 interface Props { title?: string; description?: string; overlayNav?: boolean }
 const { title, description, overlayNav = false } = Astro.props;
-const site = await getSiteSettings();
+const [site, pricing] = await Promise.all([getSiteSettings(), getPricing()]);
+const showPricing = (pricing?.packages?.length ?? 0) > 0;
 const pageTitle = title ? `${title} — ${site.name}` : site.name;
 const path = Astro.url.pathname;
 const current = (href: string) => (href === '/' ? path === '/' : path.startsWith(href)) ? 'page' : undefined;
@@ -25,6 +26,7 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
       <a href="/" aria-current={current('/')}>{site.name}</a>
       <div class="links">
         <a href="/#work">Work</a>
+        {showPricing && <a href="/pricing" aria-current={current('/pricing')}>Pricing</a>}
         <a href="/about" aria-current={current('/about')}>About</a>
         <a href="/contact" aria-current={current('/contact')}>Contact</a>
       </div>

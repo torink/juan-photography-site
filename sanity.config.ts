@@ -21,6 +21,10 @@ export default defineConfig({
               .title('Site settings')
               .id('siteSettings')
               .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
+            S.listItem()
+              .title('Price list')
+              .id('pricing')
+              .child(S.document().schemaType('pricing').documentId('pricing')),
             S.divider(),
             S.documentTypeListItem('gallery').title('Galleries'),
           ]),
@@ -28,11 +32,11 @@ export default defineConfig({
   ],
   schema: {
     types: schemaTypes,
-    templates: (prev) => prev.filter((t) => t.schemaType !== 'siteSettings'),
+    templates: (prev) => prev.filter((t) => !['siteSettings', 'pricing'].includes(t.schemaType)),
   },
   document: {
     actions: (prev, { schemaType }) =>
-      schemaType === 'siteSettings'
+      ['siteSettings', 'pricing'].includes(schemaType)
         ? prev.filter(({ action }) => !['unpublish', 'delete', 'duplicate'].includes(action ?? ''))
         : prev,
   },

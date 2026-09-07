@@ -56,3 +56,9 @@ export const getGalleries = () =>
 
 export const getGallery = (slug: string) =>
   safe<Gallery | null>(`*[_type == "gallery" && slug.current == $slug][0]{${GALLERY_FIELDS}}`, { slug }, null);
+
+export type Package = { name: string; price?: string; summary?: string; includes?: string[] };
+export type Pricing = { intro?: string; packages?: Package[]; note?: string };
+
+export const getPricing = () =>
+  safe<Pricing | null>(`*[_type == "pricing"][0]{intro, packages, note}`, {}, null);
