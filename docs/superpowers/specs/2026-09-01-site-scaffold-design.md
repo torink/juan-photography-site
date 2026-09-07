@@ -43,3 +43,10 @@ committed; the real values come from `sanity init` once Torin creates the projec
 
 Design polish beyond a clean dark baseline, lightbox, animations, SEO metadata beyond
 title/description, analytics.
+
+## Build notes (as shipped)
+
+- Static output, no Netlify adapter (see CLAUDE.md gotchas). `/studio` is prerendered as a
+  single-page app; `netlify.toml` rewrites `/studio/*` to it.
+- Verified: `npm run build` succeeds against an empty/placeholder dataset; home, about, and
+  contact render the dark baseline with "add this in Site settings" hints.

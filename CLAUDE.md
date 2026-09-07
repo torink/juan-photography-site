@@ -23,3 +23,14 @@ working in this folder. Do not draft pipeline changelog entries for work done he
 ## Dev server
 
 Start it with `npm run dev` in background mode and read the URL from the output; stop it when done.
+
+## Dependency gotchas (corp npm proxy, 2026-09-01)
+
+- `package.json` `overrides` are load-bearing. `ui5: npm:@sanity/ui@5.0.0-alpha.5` because the
+  proxy can't resolve the `alpha` dist-tag; `@sanity/ui: 4.0.6` because `@sanity/visual-editing`
+  otherwise hoists a 3.x copy to the root and the Studio's `@sanity/ui/menu` imports break in dev.
+- No `@astrojs/netlify` adapter. The site is fully static; the adapter's dev middleware tries to
+  spawn Deno for edge functions and crashes `astro dev`. Netlify just publishes `dist/`.
+- The dev-server launch config lives in `~/Dev/.claude/launch.json` as `juan-site-dev`
+  (the Browser pane reads the session root, not this folder).
+- `/studio` shows "Configuration must contain projectId" until `.env` is filled from `sanity init`.

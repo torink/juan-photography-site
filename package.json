@@ -26,6 +26,7 @@
     "esbuild": true
   },
   "overrides": {
-    "ui5": "npm:@sanity/ui@5.0.0-alpha.5"
+    "ui5": "npm:@sanity/ui@5.0.0-alpha.5",
+    "@sanity/ui": "4.0.6"
   }
 }
