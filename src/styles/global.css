@@ -5,8 +5,8 @@
   --muted: #7d7d7d;
   --line: #1c1c1c;
   --gap: clamp(1.25rem, 3.5vw, 3rem);
-  --sans: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --display: "Alumni Sans SC", "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --sans: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --display: "Alumni Sans SC", "Nunito Sans", "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 * { box-sizing: border-box; }
