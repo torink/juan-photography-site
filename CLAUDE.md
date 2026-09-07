@@ -19,3 +19,7 @@ working in this folder. Do not draft pipeline changelog entries for work done he
 - npm goes through the corp proxy in `~/.npmrc`. New package versions are quarantined ~7 days;
   if a version 404s, pin an older one rather than working around the proxy.
 - No PII rules beyond common sense; this is a public portfolio site.
+
+## Dev server
+
+Start it with `npm run dev` in background mode and read the URL from the output; stop it when done.

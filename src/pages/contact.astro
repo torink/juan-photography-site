@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { getSiteSettings } from '../sanity/queries';
+const site = await getSiteSettings();
+---
+<Base title="Contact">
+  <div class="page contact">
+    <h1>Contact</h1>
+    {site.email && <p><a href={`mailto:${site.email}`}>{site.email}</a></p>}
+    {site.instagram && <p><a href={`https://instagram.com/${site.instagram}`} rel="noopener">@{site.instagram}</a></p>}
+    {!site.email && !site.instagram && <p class="empty-note">Add an email or Instagram handle in Site settings.</p>}
+  </div>
+</Base>

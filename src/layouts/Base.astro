@@ -1,0 +1,36 @@
+---
+import '../styles/global.css';
+import { getSiteSettings } from '../sanity/queries';
+
+interface Props { title?: string; description?: string; overlayNav?: boolean }
+const { title, description, overlayNav = false } = Astro.props;
+const site = await getSiteSettings();
+const pageTitle = title ? `${title} — ${site.name}` : site.name;
+const path = Astro.url.pathname;
+const current = (href: string) => (href === '/' ? path === '/' : path.startsWith(href)) ? 'page' : undefined;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body>
+    <nav class:list={['nav', { solid: !overlayNav }]}>
+      <a href="/" aria-current={current('/')}>{site.name}</a>
+      <div class="links">
+        <a href="/#work">Work</a>
+        <a href="/about" aria-current={current('/about')}>About</a>
+        <a href="/contact" aria-current={current('/contact')}>Contact</a>
+      </div>
+    </nav>
+    <main><slot /></main>
+    <footer>
+      <span>© {new Date().getFullYear()} {site.name}</span>
+      {site.instagram && <a href={`https://instagram.com/${site.instagram}`} rel="noopener">Instagram</a>}
+      {site.email && <a href={`mailto:${site.email}`}>Email</a>}
+    </footer>
+  </body>
+</html>

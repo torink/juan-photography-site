@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getGalleries, getGallery } from '../../sanity/queries';
+import { imageUrl } from '../../sanity/image';
+
+export async function getStaticPaths() {
+  const galleries = await getGalleries();
+  return galleries.map((g) => ({ params: { slug: g.slug } }));
+}
+
+const { slug } = Astro.params;
+const gallery = await getGallery(slug!);
+if (!gallery) return Astro.redirect('/');
+---
+<Base title={gallery.title} description={gallery.description}>
+  <div class="page">
+    <h1>{gallery.title}</h1>
+    {gallery.description && <p class="lede">{gallery.description}</p>}
+    <div class="photos">
+      {(gallery.photos ?? []).map((p, i) => (
+        <img src={imageUrl(p, 2000)} alt={`${gallery.title} ${i + 1}`} loading={i < 2 ? 'eager' : 'lazy'} />
+      ))}
+    </div>
+    {(gallery.photos ?? []).length === 0 && <p class="empty-note">No photos in this gallery yet.</p>}
+  </div>
+</Base>

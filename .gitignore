@@ -1,7 +1,21 @@
-node_modules/
-dist/
+
+# build output
+# dependencies
+# environment variables
+# generated types
+# jetbrains setting folder
+# logs
+# macOS-specific files
+.DS_Store
 .astro/
 .env
 .env.*
-.DS_Store
+.env.production
+.idea/
 .netlify/
+dist/
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*

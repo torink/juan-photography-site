@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { getGalleries, getSiteSettings } from '../sanity/queries';
+import { imageUrl } from '../sanity/image';
+
+const [site, galleries] = await Promise.all([getSiteSettings(), getGalleries()]);
+---
+<Base overlayNav description={site.tagline}>
+  <section class:list={['hero', { empty: !site.heroImage }]}>
+    {site.heroImage
+      ? <img src={imageUrl(site.heroImage, 2400)} alt="" fetchpriority="high" />
+      : <p class="empty-note">Add a home page photo in Site settings.</p>}
+    <div class="caption">
+      <h1>{site.name}</h1>
+      {site.tagline && <p>{site.tagline}</p>}
+    </div>
+  </section>
+
+  <section id="work" class="tiles">
+    {galleries.map((g) => (
+      <a class="tile" href={`/gallery/${g.slug}/`}>
+        <img src={imageUrl(g.cover, 900, 1125)} alt={g.title} loading="lazy" />
+        <span>{g.title}</span>
+      </a>
+    ))}
+  </section>
+  {galleries.length === 0 && <p class="empty-note">No galleries yet. Add one in the Studio.</p>}
+</Base>

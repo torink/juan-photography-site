@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import { getSiteSettings } from '../sanity/queries';
+import { imageUrl } from '../sanity/image';
+const site = await getSiteSettings();
+---
+<Base title="About">
+  <div class="page about">
+    {site.aboutImage && <img src={imageUrl(site.aboutImage, 1400)} alt={site.name} />}
+    <div>
+      <h1>About</h1>
+      <p>{site.aboutText ?? 'Add about text in Site settings.'}</p>
+    </div>
+  </div>
+</Base>
