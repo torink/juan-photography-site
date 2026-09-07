@@ -49,3 +49,7 @@ from GitHub + the Sanity publish webhook require the repo to be linked in the Ne
 Netlify build hook "Sanity publish" (id `6a9eeea69b7856a200c28aae`) is called by Sanity webhook
 `vaz83yUZoxQqTCgL` ("Netlify rebuild on publish", document create/update/delete on gallery + siteSettings,
 published only). Both need the GitHub repo linked to the Netlify site to actually build.
+Repo is PUBLIC (2026-09-07) so Netlify's free-plan "unrecognized Git contributor" check stops
+blocking git- and hook-triggered builds. Keep no secrets in git (.env is ignored). If a build is
+ever blocked with that message again, push any commit first; the check goes stale after
+visibility or membership changes.
