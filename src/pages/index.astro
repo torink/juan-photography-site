@@ -19,7 +19,7 @@ const heroImages = site.heroImages?.length ? site.heroImages : galleries.slice(0
     <div class="covers">
       {galleries.map((g) => (
         <a class="cover" href={`/gallery/${g.slug}/`}>
-          <img src={imageUrl(g.cover, 1400)} srcset={`${imageUrl(g.cover, 800)} 800w, ${imageUrl(g.cover, 1400)} 1400w`} sizes="(min-width: 800px) 55vw, 100vw" alt={g.title} loading="lazy" decoding="async" style={`object-position: ${focal(g.cover)}`} />
+          <img data-parallax src={imageUrl(g.cover, 1400)} srcset={`${imageUrl(g.cover, 800)} 800w, ${imageUrl(g.cover, 1400)} 1400w`} sizes="(min-width: 800px) 55vw, 100vw" alt={g.title} loading="lazy" decoding="async" style={`object-position: ${focal(g.cover)}`} />
           <div class="cap">
             <span class="display">{g.title}</span>
             <span class="mono">{[g.place, g.year].filter(Boolean).join(' · ')}</span>

@@ -28,6 +28,7 @@ for (let i = 0; i < photos.length; ) {
         const w = row.kind === 'pair' ? 1200 : row.kind === 'offset' ? 1400 : 2400;
         return (
           <img
+            data-parallax
             src={imageUrl(img, w)}
             srcset={`${imageUrl(img, Math.round(w / 2))} ${Math.round(w / 2)}w, ${imageUrl(img, w)} ${w}w`}
             sizes={row.kind === 'pair' ? '(min-width: 800px) 50vw, 100vw' : row.kind === 'offset' ? '(min-width: 800px) 60vw, 100vw' : '100vw'}

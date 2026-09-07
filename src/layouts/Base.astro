@@ -19,7 +19,7 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
     <meta name="color-scheme" content="dark" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:wght@900&family=Archivo:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <nav class:list={['nav', { overlay: overlayNav }]}>
@@ -40,5 +40,35 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
         <span>© {new Date().getFullYear()}</span>
       </div>
     </footer>
+    <script>
+      // Subtle parallax. Heroes drift at 0.25x scroll; body photos ease a few percent as they cross the viewport.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduce) {
+        const heroes = Array.from(document.querySelectorAll<HTMLElement>('.hero'));
+        const photos = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+        let ticking = false;
+        const update = () => {
+          ticking = false;
+          const vh = window.innerHeight;
+          for (const h of heroes) {
+            const r = h.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > vh) continue;
+            const y = Math.max(0, -r.top) * 0.25;
+            h.style.setProperty('--py', `${y.toFixed(1)}px`);
+          }
+          for (const p of photos) {
+            const r = p.getBoundingClientRect();
+            if (r.bottom < -vh * 0.5 || r.top > vh * 1.5) continue;
+            const center = r.top + r.height / 2 - vh / 2;   // 0 when centered
+            const t = Math.max(-1, Math.min(1, center / vh)); // -1..1
+            p.style.setProperty('--py', `${(t * -3).toFixed(2)}%`);
+          }
+        };
+        const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        update();
+      }
+    </script>
   </body>
 </html>
