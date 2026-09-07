@@ -10,3 +10,10 @@ export function imageUrl(source: SanityImageSource, width: number, height?: numb
   if (height) b = b.height(height).fit('crop');
   return b.url();
 }
+
+/** CSS object-position from the Studio hotspot, so cover-fit images keep the chosen focal point. */
+export function focal(source: { hotspot?: { x?: number; y?: number } } | undefined) {
+  const h = source?.hotspot;
+  if (!h || typeof h.x !== 'number' || typeof h.y !== 'number') return '50% 50%';
+  return `${(h.x * 100).toFixed(1)}% ${(h.y * 100).toFixed(1)}%`;
+}

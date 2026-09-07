@@ -1,6 +1,6 @@
 import { sanityClient } from 'sanity:client';
 
-export type SanityImage = { asset: { _ref: string }; hotspot?: unknown; crop?: unknown };
+export type SanityImage = { asset: { _ref: string }; hotspot?: { x: number; y: number; width: number; height: number }; crop?: { top: number; bottom: number; left: number; right: number } };
 
 export type SiteSettings = {
   name: string;

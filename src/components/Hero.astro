@@ -4,7 +4,7 @@
  * Masthead bottom-left, counter bottom-right. Light grain overlay for film scans.
  */
 import type { SanityImage } from '../sanity/queries';
-import { imageUrl } from '../sanity/image';
+import { focal, imageUrl } from '../sanity/image';
 
 interface Props { images: SanityImage[]; title: string; meta?: (string | undefined)[]; tagline?: string; short?: boolean }
 const { images, title, meta = [], tagline, short = false } = Astro.props;
@@ -22,6 +22,7 @@ const slides = images.slice(0, 8);
       fetchpriority={i === 0 ? 'high' : 'low'}
       loading={i === 0 ? 'eager' : 'lazy'}
       decoding="async"
+      style={`object-position: ${focal(img)}`}
     />
   ))}
   <div class="grain" aria-hidden="true"></div>
