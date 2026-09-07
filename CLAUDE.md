@@ -34,3 +34,7 @@ Start it with `npm run dev` in background mode and read the URL from the output;
 - The dev-server launch config lives in `~/Dev/.claude/launch.json` as `juan-site-dev`
   (the Browser pane reads the session root, not this folder).
 - `/studio` shows "Configuration must contain projectId" until `.env` is filled from `sanity init`.
+
+## Sanity project
+
+Project `4e62iguy` ("Briseno-Guzman Portfolio", org owned by Torin, free plan), dataset `production`. CORS allows `http://localhost:4321`; add the Netlify URL when deploying. `.env` is filled locally and gitignored.
