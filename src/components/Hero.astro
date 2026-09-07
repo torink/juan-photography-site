@@ -1,0 +1,64 @@
+---
+/**
+ * Full-bleed hero. One image renders still; two or more crossfade every 6s.
+ * Masthead bottom-left, counter bottom-right. Light grain overlay for film scans.
+ */
+import type { SanityImage } from '../sanity/queries';
+import { imageUrl } from '../sanity/image';
+
+interface Props { images: SanityImage[]; title: string; meta?: (string | undefined)[]; tagline?: string; short?: boolean }
+const { images, title, meta = [], tagline, short = false } = Astro.props;
+const metaLine = meta.filter(Boolean);
+const slides = images.slice(0, 8);
+---
+<section class:list={['hero', { short, empty: slides.length === 0 }]} data-hero data-count={slides.length}>
+  {slides.map((img, i) => (
+    <img
+      class:list={['hero-img', { active: i === 0 }]}
+      src={imageUrl(img, 2400)}
+      srcset={`${imageUrl(img, 1200)} 1200w, ${imageUrl(img, 2400)} 2400w`}
+      sizes="100vw"
+      alt=""
+      fetchpriority={i === 0 ? 'high' : 'low'}
+      loading={i === 0 ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  ))}
+  <div class="grain" aria-hidden="true"></div>
+  <div class="masthead">
+    <h1>{title}</h1>
+    {tagline && <p class="tagline">{tagline}</p>}
+    {metaLine.length > 0 && <p class="meta">{metaLine.join('  ·  ')}</p>}
+  </div>
+  {slides.length > 1 && <p class="counter"><span data-current>01</span> / {String(slides.length).padStart(2, '0')}</p>}
+  {slides.length === 0 && <p class="empty-note">Add photos at the top of this page in the Studio.</p>}
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-hero]').forEach((hero) => {
+    const imgs = Array.from(hero.querySelectorAll<HTMLImageElement>('.hero-img'));
+    if (imgs.length < 2) return;
+    const counter = hero.querySelector<HTMLElement>('[data-current]');
+    let i = 0;
+    let timer: number;
+    const show = (n: number) => {
+      imgs[i].classList.remove('active');
+      i = (n + imgs.length) % imgs.length;
+      imgs[i].classList.add('active');
+      if (counter) counter.textContent = String(i + 1).padStart(2, '0');
+    };
+    const start = () => { timer = window.setInterval(() => show(i + 1), 6000); };
+    const restart = () => { window.clearInterval(timer); start(); };
+    hero.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) return;
+      show(i + 1); restart();
+    });
+    let x0 = 0;
+    hero.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    hero.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) { show(dx < 0 ? i + 1 : i - 1); restart(); }
+    });
+    start();
+  });
+</script>

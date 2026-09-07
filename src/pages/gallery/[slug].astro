@@ -1,26 +1,39 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import PhotoRun from '../../components/PhotoRun.astro';
 import { getGalleries, getGallery } from '../../sanity/queries';
-import { imageUrl } from '../../sanity/image';
 
 export async function getStaticPaths() {
   const galleries = await getGalleries();
-  return galleries.map((g) => ({ params: { slug: g.slug } }));
+  return galleries.map((g, i) => ({ params: { slug: g.slug }, props: { next: galleries[(i + 1) % galleries.length] } }));
 }
 
 const { slug } = Astro.params;
+const { next } = Astro.props;
 const gallery = await getGallery(slug!);
 if (!gallery) return Astro.redirect('/');
+
+const heroImages = gallery.heroImages?.length ? gallery.heroImages : [gallery.cover];
+const sections = gallery.sections?.length ? gallery.sections : [];
+const photos = gallery.photos ?? [];
+const hasPhotos = photos.length > 0 || sections.some((s) => (s.photos ?? []).length > 0);
 ---
-<Base title={gallery.title} description={gallery.description}>
-  <div class="page">
-    <h1>{gallery.title}</h1>
-    {gallery.description && <p class="lede">{gallery.description}</p>}
-    <div class="photos">
-      {(gallery.photos ?? []).map((p, i) => (
-        <img src={imageUrl(p, 2000)} alt={`${gallery.title} ${i + 1}`} loading={i < 2 ? 'eager' : 'lazy'} />
-      ))}
+<Base title={gallery.title} description={gallery.description} overlayNav>
+  <Hero images={heroImages} title={gallery.title} meta={[gallery.place, gallery.year, gallery.film]} short />
+
+  {gallery.description && (
+    <div class="intro"><p class="lede">{gallery.description}</p></div>
+  )}
+
+  {photos.length > 0 && <PhotoRun photos={photos} alt={gallery.title} eager />}
+  {sections.map((s) => (s.photos ?? []).length > 0 && <PhotoRun photos={s.photos!} title={s.title} alt={`${gallery.title} ${s.title}`} />)}
+  {!hasPhotos && <p class="empty-note">No photos in this gallery yet.</p>}
+
+  {next && next.slug !== gallery.slug && (
+    <div class="gallery-foot mono">
+      <a href="/#work">← All work</a>
+      <a href={`/gallery/${next.slug}/`}>Next: {next.title} →</a>
     </div>
-    {(gallery.photos ?? []).length === 0 && <p class="empty-note">No photos in this gallery yet.</p>}
-  </div>
+  )}
 </Base>

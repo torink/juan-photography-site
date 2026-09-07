@@ -5,19 +5,28 @@ export type SanityImage = { asset: { _ref: string }; hotspot?: unknown; crop?: u
 export type SiteSettings = {
   name: string;
   tagline?: string;
-  heroImage?: SanityImage;
+  heroImages?: SanityImage[];
   aboutImage?: SanityImage;
   aboutText?: string;
   email?: string;
+  phone?: string;
   instagram?: string;
+  based?: string;
 };
+
+export type GallerySection = { title: string; photos?: SanityImage[] };
 
 export type Gallery = {
   title: string;
   slug: string;
   description?: string;
   cover: SanityImage;
+  heroImages?: SanityImage[];
   photos?: SanityImage[];
+  sections?: GallerySection[];
+  place?: string;
+  year?: string;
+  film?: string;
 };
 
 const FALLBACK_SETTINGS: SiteSettings = { name: 'Juan Briseno', tagline: 'Photography' };
@@ -32,11 +41,18 @@ async function safe<T>(query: string, params: Record<string, unknown>, fallback:
   }
 }
 
-export const getSiteSettings = () =>
-  safe<SiteSettings>(`*[_type == "siteSettings"][0]{name, tagline, heroImage, aboutImage, aboutText, email, instagram}`, {}, FALLBACK_SETTINGS);
+// heroImages falls back to the old single heroImage so existing content keeps rendering.
+const SETTINGS = `*[_type == "siteSettings"][0]{
+  name, tagline, aboutImage, aboutText, email, phone, instagram, based,
+  "heroImages": coalesce(heroImages, select(defined(heroImage) => [heroImage], []))
+}`;
+
+const GALLERY_FIELDS = `title, "slug": slug.current, description, cover, heroImages, photos, sections, place, year, film`;
+
+export const getSiteSettings = () => safe<SiteSettings>(SETTINGS, {}, FALLBACK_SETTINGS);
 
 export const getGalleries = () =>
-  safe<Gallery[]>(`*[_type == "gallery" && defined(slug.current)] | order(order asc, title asc){title, "slug": slug.current, description, cover, photos}`, {}, []);
+  safe<Gallery[]>(`*[_type == "gallery" && defined(slug.current)] | order(order asc, title asc){${GALLERY_FIELDS}}`, {}, []);
 
 export const getGallery = (slug: string) =>
-  safe<Gallery | null>(`*[_type == "gallery" && slug.current == $slug][0]{title, "slug": slug.current, description, cover, photos}`, { slug }, null);
+  safe<Gallery | null>(`*[_type == "gallery" && slug.current == $slug][0]{${GALLERY_FIELDS}}`, { slug }, null);

@@ -1,28 +1,31 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
 import { getGalleries, getSiteSettings } from '../sanity/queries';
 import { imageUrl } from '../sanity/image';
 
 const [site, galleries] = await Promise.all([getSiteSettings(), getGalleries()]);
+const heroImages = site.heroImages?.length ? site.heroImages : galleries.slice(0, 5).map((g) => g.cover);
 ---
 <Base overlayNav description={site.tagline}>
-  <section class:list={['hero', { empty: !site.heroImage }]}>
-    {site.heroImage
-      ? <img src={imageUrl(site.heroImage, 2400)} alt="" fetchpriority="high" />
-      : <p class="empty-note">Add a home page photo in Site settings.</p>}
-    <div class="caption">
-      <h1>{site.name}</h1>
-      {site.tagline && <p>{site.tagline}</p>}
+  <Hero images={heroImages} title={site.name} tagline={site.tagline} meta={[site.based, 'Photography']} />
+
+  <section id="work" class="index">
+    <div class="index-head">
+      <h2 class="display">Work</h2>
+      <span class="mono">{String(galleries.length).padStart(2, '0')} {galleries.length === 1 ? 'gallery' : 'galleries'}</span>
+    </div>
+    {galleries.length === 0 && <p class="empty-note">No galleries yet. Add one in the Studio.</p>}
+    <div class="covers">
+      {galleries.map((g) => (
+        <a class="cover" href={`/gallery/${g.slug}/`}>
+          <img src={imageUrl(g.cover, 1400)} srcset={`${imageUrl(g.cover, 800)} 800w, ${imageUrl(g.cover, 1400)} 1400w`} sizes="(min-width: 800px) 55vw, 100vw" alt={g.title} loading="lazy" decoding="async" />
+          <div class="cap">
+            <span class="display">{g.title}</span>
+            <span class="mono">{[g.place, g.year].filter(Boolean).join(' · ')}</span>
+          </div>
+        </a>
+      ))}
     </div>
   </section>
-
-  <section id="work" class="tiles">
-    {galleries.map((g) => (
-      <a class="tile" href={`/gallery/${g.slug}/`}>
-        <img src={imageUrl(g.cover, 900, 1125)} alt={g.title} loading="lazy" />
-        <span>{g.title}</span>
-      </a>
-    ))}
-  </section>
-  {galleries.length === 0 && <p class="empty-note">No galleries yet. Add one in the Studio.</p>}
 </Base>

@@ -16,9 +16,12 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
     <meta name="color-scheme" content="dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <nav class:list={['nav', { solid: !overlayNav }]}>
+    <nav class:list={['nav', { overlay: overlayNav }]}>
       <a href="/" aria-current={current('/')}>{site.name}</a>
       <div class="links">
         <a href="/#work">Work</a>
@@ -28,9 +31,12 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
     </nav>
     <main><slot /></main>
     <footer>
-      <span>© {new Date().getFullYear()} {site.name}</span>
-      {site.instagram && <a href={`https://instagram.com/${site.instagram}`} rel="noopener">Instagram</a>}
-      {site.email && <a href={`mailto:${site.email}`}>Email</a>}
+      <span>{site.name}{site.based && ` · ${site.based}`}</span>
+      <div class="links">
+        {site.instagram && <a href={`https://instagram.com/${site.instagram}`} rel="noopener">Instagram</a>}
+        {site.email && <a href={`mailto:${site.email}`}>Email</a>}
+        <span>© {new Date().getFullYear()}</span>
+      </div>
     </footer>
   </body>
 </html>

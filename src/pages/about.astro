@@ -5,11 +5,14 @@ import { imageUrl } from '../sanity/image';
 const site = await getSiteSettings();
 ---
 <Base title="About">
-  <div class="page about">
-    {site.aboutImage && <img src={imageUrl(site.aboutImage, 1400)} alt={site.name} />}
-    <div>
-      <h1>About</h1>
+  <div class="page">
+    <h1 class="display">About</h1>
+    <div class="side">
+      {site.aboutImage && <img src={imageUrl(site.aboutImage, 1400)} alt={site.name} />}
+    </div>
+    <div class="body">
       <p>{site.aboutText ?? 'Add about text in Site settings.'}</p>
+      {site.based && <p class="mono">{site.based}</p>}
     </div>
   </div>
 </Base>

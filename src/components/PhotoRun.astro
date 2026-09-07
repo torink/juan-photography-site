@@ -1,0 +1,42 @@
+---
+/**
+ * Editorial run of photos: alternates full-bleed, two-up, and a narrow offset single.
+ * Pattern repeats every 5 photos. Pass `title` to render a section heading.
+ */
+import type { SanityImage } from '../sanity/queries';
+import { imageUrl } from '../sanity/image';
+
+interface Props { photos: SanityImage[]; title?: string; alt: string; eager?: boolean }
+const { photos, title, alt, eager = false } = Astro.props;
+
+// Group into rows: [full], [a, b], [offset], [a, b], [full] ...
+type Row = { kind: 'full' | 'pair' | 'offset'; items: SanityImage[] };
+const rows: Row[] = [];
+const pattern: Row['kind'][] = ['full', 'pair', 'offset', 'pair'];
+let p = 0;
+for (let i = 0; i < photos.length; ) {
+  const kind = pattern[p++ % pattern.length];
+  if (kind === 'pair' && i + 1 < photos.length) { rows.push({ kind, items: [photos[i], photos[i + 1]] }); i += 2; }
+  else { rows.push({ kind: kind === 'pair' ? 'full' : kind, items: [photos[i]] }); i += 1; }
+}
+---
+{title && <h2 class="run-title">{title}</h2>}
+<div class="run">
+  {rows.map((row, r) => (
+    <div class:list={['row', row.kind]}>
+      {row.items.map((img, k) => {
+        const w = row.kind === 'pair' ? 1200 : row.kind === 'offset' ? 1400 : 2400;
+        return (
+          <img
+            src={imageUrl(img, w)}
+            srcset={`${imageUrl(img, Math.round(w / 2))} ${Math.round(w / 2)}w, ${imageUrl(img, w)} ${w}w`}
+            sizes={row.kind === 'pair' ? '(min-width: 800px) 50vw, 100vw' : row.kind === 'offset' ? '(min-width: 800px) 60vw, 100vw' : '100vw'}
+            alt={`${alt} ${r + 1}${row.items.length > 1 ? String.fromCharCode(97 + k) : ''}`}
+            loading={eager && r === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        );
+      })}
+    </div>
+  ))}
+</div>
