@@ -53,3 +53,19 @@ Repo is PUBLIC (2026-09-07) so Netlify's free-plan "unrecognized Git contributor
 blocking git- and hook-triggered builds. Keep no secrets in git (.env is ignored). If a build is
 ever blocked with that message again, push any commit first; the check goes stale after
 visibility or membership changes.
+
+## Hosting moved to Cloudflare Pages (2026-09-08)
+
+Netlify's free plan is credit-based (300 credits/mo, 15 per deploy, 20/GB bandwidth) and ran out
+in one afternoon; the Netlify site is now a dead end (keep it until DNS cuts over, then delete).
+Cloudflare Pages project `galleriaguzman` lives in JUAN's Cloudflare account
+(Northwestphotography503@gmail.com, account id 58ee1231bc1a3f59a44a6e055d02a2b1); Torin is a
+Super Administrator member. Deploy from the CLI with
+`CLOUDFLARE_ACCOUNT_ID=58ee1231bc1a3f59a44a6e055d02a2b1 npx wrangler pages deploy dist --project-name galleriaguzman --branch main`
+after `npm run build`. `public/_redirects` rewrites `/studio/*`. Wrangler is logged in as Torin
+(OAuth; token lacks zone/dns write, so zone creation and DNS record edits are dashboard-only).
+Domains: galleriaguzman.studio (zone 4ad82add0e87ca5ea2f980361cd78d5e, Cloudflare NS eric/liz)
+attached to Pages with www; galleriabriseno.studio pending (Juan's intended MAIN, guzman = backup
+redirect, unconfirmed). Both registered at Porkbun. Sanity CORS has all four hostnames + pages.dev.
+TODO: connect the Pages project to GitHub in the dashboard, create a Pages deploy hook, repoint
+Sanity webhook vaz83yUZoxQqTCgL from the Netlify build hook to it.
