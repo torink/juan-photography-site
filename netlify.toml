@@ -1,9 +1,0 @@
-[build]
-  command = "npm run build"
-  publish = "dist"
-
-# Sanity Studio is a single-page app under /studio.
-[[redirects]]
-  from = "/studio/*"
-  to = "/studio/index.html"
-  status = 200

@@ -70,4 +70,4 @@ DONE 2026-09-08: Pages project connected to GitHub (main, `npm run build`, `dist
 NODE_VERSION=24). package-lock MUST be generated with npm 10 (`npx npm@10 install --package-lock-only`):
 npm 11 omits optional-platform subdeps and Cloudflare's npm 10 `npm ci` rejects that lock. Pages deploy hook
 `cbfe8592-4fa6-4ca3-8a55-d33d236146e9` ("Sanity publish"); Sanity webhook vaz83yUZoxQqTCgL now points at it.
-briseno → guzman 301 via a Page Rule on the briseno zone. Netlify site can be deleted.
+briseno → guzman 301 via a Page Rule on the briseno zone. Netlify site DELETED 2026-09-08.
