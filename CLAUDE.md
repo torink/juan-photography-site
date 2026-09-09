@@ -56,6 +56,8 @@ visibility or membership changes.
 
 ## Hosting moved to Cloudflare Pages (2026-09-08)
 
+See `docs/SERVICES.md` for the one-page map of every service, owner, and login.
+
 Netlify's free plan is credit-based (300 credits/mo, 15 per deploy, 20/GB bandwidth) and ran out
 in one afternoon; the Netlify site is now a dead end (keep it until DNS cuts over, then delete).
 Cloudflare Pages project `galleriaguzman` lives in JUAN's Cloudflare account
