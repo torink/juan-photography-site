@@ -66,5 +66,8 @@ after `npm run build`. `public/_redirects` rewrites `/studio/*`. Wrangler is log
 (OAuth; token lacks zone/dns write, so zone creation and DNS record edits are dashboard-only).
 Domains: galleriaguzman.studio (zone 4ad82add0e87ca5ea2f980361cd78d5e, Cloudflare NS eric/liz)
 attached to Pages with www, LIVE 2026-09-08 (apex + www, CNAME → galleriaguzman.pages.dev, proxied); galleriabriseno.studio LIVE 2026-09-08 (zone 502a290719cab51943844e532ad5585f) = BACKUP. CONFIRMED 2026-09-08: galleriaguzman.studio is MAIN (canonical + astro `site`). No redirect rule yet on briseno (needs dashboard Redirect Rule; wrangler token lacks rulesets write). Both registered at Porkbun. Sanity CORS has all four hostnames + pages.dev.
-TODO: connect the Pages project to GitHub in the dashboard, create a Pages deploy hook, repoint
-Sanity webhook vaz83yUZoxQqTCgL from the Netlify build hook to it.
+DONE 2026-09-08: Pages project connected to GitHub (main, `npm run build`, `dist`, env PUBLIC_SANITY_* +
+NODE_VERSION=24). package-lock MUST be generated with npm 10 (`npx npm@10 install --package-lock-only`):
+npm 11 omits optional-platform subdeps and Cloudflare's npm 10 `npm ci` rejects that lock. Pages deploy hook
+`cbfe8592-4fa6-4ca3-8a55-d33d236146e9` ("Sanity publish"); Sanity webhook vaz83yUZoxQqTCgL now points at it.
+briseno → guzman 301 via a Page Rule on the briseno zone. Netlify site can be deleted.
