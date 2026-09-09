@@ -8,6 +8,8 @@ const [site, pricing] = await Promise.all([getSiteSettings(), getPricing()]);
 const showPricing = (pricing?.packages?.length ?? 0) > 0;
 const pageTitle = title ? `${title} — ${site.name}` : site.name;
 const path = Astro.url.pathname;
+const SITE = 'https://galleriabriseno.studio';
+const canonical = SITE + Astro.url.pathname;
 const current = (href: string) => (href === '/' ? path === '/' : path.startsWith(href)) ? 'page' : undefined;
 ---
 <html lang="en">
@@ -16,6 +18,10 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
     <meta name="color-scheme" content="dark" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -65,7 +65,6 @@ Super Administrator member. Deploy from the CLI with
 after `npm run build`. `public/_redirects` rewrites `/studio/*`. Wrangler is logged in as Torin
 (OAuth; token lacks zone/dns write, so zone creation and DNS record edits are dashboard-only).
 Domains: galleriaguzman.studio (zone 4ad82add0e87ca5ea2f980361cd78d5e, Cloudflare NS eric/liz)
-attached to Pages with www, LIVE 2026-09-08 (apex + www, CNAME → galleriaguzman.pages.dev, proxied); galleriabriseno.studio pending (Juan's intended MAIN, guzman = backup
-redirect, unconfirmed). Both registered at Porkbun. Sanity CORS has all four hostnames + pages.dev.
+attached to Pages with www, LIVE 2026-09-08 (apex + www, CNAME → galleriaguzman.pages.dev, proxied); galleriabriseno.studio LIVE 2026-09-08 (zone 502a290719cab51943844e532ad5585f) = MAIN (canonical + astro `site`); guzman = backup, no redirect rule yet (needs dashboard Redirect Rule; wrangler token lacks rulesets write). Both registered at Porkbun. Sanity CORS has all four hostnames + pages.dev.
 TODO: connect the Pages project to GitHub in the dashboard, create a Pages deploy hook, repoint
 Sanity webhook vaz83yUZoxQqTCgL from the Netlify build hook to it.
