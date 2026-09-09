@@ -8,7 +8,7 @@ const [site, pricing] = await Promise.all([getSiteSettings(), getPricing()]);
 const showPricing = (pricing?.packages?.length ?? 0) > 0;
 const pageTitle = title ? `${title} — ${site.name}` : site.name;
 const path = Astro.url.pathname;
-const SITE = 'https://galleriabriseno.studio';
+const SITE = 'https://galleriaguzman.studio';
 const canonical = SITE + Astro.url.pathname;
 const current = (href: string) => (href === '/' ? path === '/' : path.startsWith(href)) ? 'page' : undefined;
 ---

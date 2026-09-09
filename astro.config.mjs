@@ -13,7 +13,7 @@ if (!projectId) {
 }
 
 export default defineConfig({
-  site: 'https://galleriabriseno.studio',
+  site: 'https://galleriaguzman.studio',
   output: 'static',
   integrations: [
     sanity({
